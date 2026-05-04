@@ -1,0 +1,735 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Transit Accessibility & Socioeconomic Equity in Denver — Kevin E. Morales</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Source+Serif+4:ital,wght@0,300;0,400;1,300&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink: #1a1814;
+    --ink-mid: #4a4640;
+    --ink-light: #7a746e;
+    --ink-faint: #b8b2ab;
+    --paper: #faf8f4;
+    --paper-warm: #f2ede4;
+    --paper-card: #ffffff;
+    --accent: #2b5a8a;
+    --accent-mid: #4a7fb5;
+    --accent-light: #d4e4f5;
+    --accent-warm: #8b4a1a;
+    --rule: rgba(26,24,20,0.12);
+    --serif: 'Playfair Display', Georgia, serif;
+    --body-serif: 'Source Serif 4', Georgia, serif;
+    --mono: 'JetBrains Mono', monospace;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: var(--body-serif);
+    background: var(--paper);
+    color: var(--ink);
+    font-size: 17px;
+    line-height: 1.75;
+    font-weight: 300;
+  }
+
+  /* NAV */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(250,248,244,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--rule);
+    padding: 0 2rem;
+    display: flex; align-items: center; justify-content: space-between;
+    height: 56px;
+  }
+  .nav-brand {
+    font-family: var(--serif); font-size: 15px; font-weight: 600;
+    color: var(--ink); letter-spacing: 0.01em;
+    text-decoration: none;
+  }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-family: var(--mono); font-size: 11px; font-weight: 500;
+    color: var(--ink-mid); text-decoration: none; letter-spacing: 0.08em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* HERO */
+  .hero {
+    margin-top: 56px;
+    min-height: 92vh;
+    display: grid;
+    grid-template-columns: 1fr 420px;
+    gap: 0;
+    border-bottom: 1px solid var(--rule);
+  }
+  .hero-text {
+    padding: 6rem 4rem 4rem 6rem;
+    display: flex; flex-direction: column; justify-content: center;
+    border-right: 1px solid var(--rule);
+  }
+  .hero-tag {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.12em;
+    text-transform: uppercase; color: var(--accent); margin-bottom: 2rem;
+    display: flex; align-items: center; gap: 0.75rem;
+  }
+  .hero-tag::before {
+    content: ''; display: block; width: 32px; height: 1px; background: var(--accent);
+  }
+  h1 {
+    font-family: var(--serif); font-size: clamp(2.2rem, 4vw, 3.4rem);
+    font-weight: 700; line-height: 1.15; color: var(--ink);
+    margin-bottom: 1.5rem; letter-spacing: -0.01em;
+  }
+  h1 em { font-style: italic; color: var(--accent-warm); }
+  .hero-meta {
+    font-family: var(--mono); font-size: 12px; color: var(--ink-light);
+    letter-spacing: 0.06em; margin-bottom: 2rem;
+    display: flex; gap: 2rem; flex-wrap: wrap;
+  }
+  .hero-intro {
+    font-size: 18px; color: var(--ink-mid); max-width: 580px; line-height: 1.8;
+    margin-bottom: 2.5rem;
+  }
+  .hero-cta {
+    display: inline-flex; gap: 1rem; flex-wrap: wrap;
+  }
+  .btn {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 0.75rem 1.5rem;
+    text-decoration: none; border: 1px solid;
+    transition: all 0.2s;
+    cursor: pointer;
+  }
+  .btn-primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+  .btn-primary:hover { background: #1e4570; border-color: #1e4570; }
+  .btn-outline { background: transparent; color: var(--ink); border-color: var(--rule); }
+  .btn-outline:hover { border-color: var(--ink-mid); }
+
+  .hero-sidebar {
+    padding: 4rem 3rem;
+    display: flex; flex-direction: column; justify-content: center;
+    background: var(--paper-warm);
+  }
+  .keyword-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-faint); margin-bottom: 1rem;
+  }
+  .keywords { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-bottom: 2.5rem; }
+  .kw {
+    font-family: var(--mono); font-size: 11px; padding: 0.3rem 0.75rem;
+    background: var(--paper-card); border: 1px solid var(--rule);
+    color: var(--ink-mid); letter-spacing: 0.05em;
+  }
+  .stat-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .stat-card {
+    background: var(--paper-card); border: 1px solid var(--rule);
+    padding: 1rem; text-align: center;
+  }
+  .stat-num {
+    font-family: var(--serif); font-size: 1.8rem; font-weight: 600;
+    color: var(--accent); display: block; line-height: 1;
+  }
+  .stat-label {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--ink-light); margin-top: 0.4rem;
+    display: block;
+  }
+
+  /* SECTIONS */
+  section { border-bottom: 1px solid var(--rule); }
+  .section-inner { max-width: 1100px; margin: 0 auto; padding: 5rem 2rem; }
+  .section-header { margin-bottom: 3rem; }
+  .section-num {
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--ink-faint); display: block;
+    margin-bottom: 0.75rem;
+  }
+  h2 {
+    font-family: var(--serif); font-size: clamp(1.6rem, 3vw, 2.4rem);
+    font-weight: 600; line-height: 1.2; color: var(--ink);
+  }
+  h3 {
+    font-family: var(--serif); font-size: 1.25rem; font-weight: 600;
+    color: var(--ink); margin-bottom: 0.75rem;
+  }
+  p { margin-bottom: 1.25rem; color: var(--ink-mid); }
+  p:last-child { margin-bottom: 0; }
+
+  /* ABSTRACT */
+  .abstract-block {
+    border-left: 3px solid var(--accent);
+    padding: 2rem 2.5rem;
+    background: var(--paper-warm);
+    max-width: 800px;
+  }
+  .abstract-block p { font-size: 16px; line-height: 1.9; }
+
+  /* TWO COL */
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 4rem; align-items: start; }
+  .three-col { display: grid; grid-template-columns: repeat(3,1fr); gap: 2rem; }
+
+  /* LIT REVIEW */
+  .lit-card {
+    border: 1px solid var(--rule); padding: 1.75rem;
+    background: var(--paper-card);
+    transition: border-color 0.2s;
+  }
+  .lit-card:hover { border-color: var(--accent-mid); }
+  .lit-num {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--accent); display: block;
+    margin-bottom: 0.5rem;
+  }
+
+  /* METHODS */
+  .method-steps { counter-reset: steps; display: flex; flex-direction: column; gap: 0; }
+  .method-step {
+    counter-increment: steps;
+    display: grid; grid-template-columns: 60px 1fr;
+    border-bottom: 1px solid var(--rule); padding: 1.5rem 0;
+  }
+  .method-step::before {
+    content: counter(steps, decimal-leading-zero);
+    font-family: var(--mono); font-size: 1.4rem; font-weight: 500;
+    color: var(--ink-faint); padding-top: 2px;
+  }
+  .method-step-content h3 { font-size: 1rem; }
+  .method-step-content p { font-size: 15px; }
+
+  /* RESULTS */
+  .results-grid { display: grid; grid-template-columns: 1fr; gap: 2.5rem; }
+  .result-block { border: 1px solid var(--rule); background: var(--paper-card); }
+  .result-header {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid var(--rule);
+    display: flex; justify-content: space-between; align-items: center;
+    background: var(--paper-warm);
+  }
+  .result-title { font-family: var(--serif); font-size: 1.1rem; font-weight: 600; }
+  .sig-badge {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 0.25rem 0.75rem; border: 1px solid;
+  }
+  .sig { background: #eaf3de; color: #3b6d11; border-color: #639922; }
+  .not-sig { background: #faeeda; color: #854f0b; border-color: #ba7517; }
+
+  table { width: 100%; border-collapse: collapse; font-size: 14px; }
+  th {
+    font-family: var(--mono); font-size: 10px; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 0.6rem 1rem;
+    color: var(--ink-light); text-align: left;
+    border-bottom: 1px solid var(--rule);
+    background: var(--paper-warm);
+  }
+  td { padding: 0.6rem 1rem; border-bottom: 1px solid var(--rule); color: var(--ink-mid); }
+  tr:last-child td { border-bottom: none; }
+  td.highlight { font-weight: 500; color: var(--ink); }
+  .anova-section td { background: rgba(43,90,138,0.04); }
+  .sig-row td { color: var(--accent); font-weight: 500; }
+  .result-body { padding: 1.5rem; }
+  .result-finding {
+    margin-top: 1rem; padding: 1rem 1.25rem;
+    border-left: 3px solid var(--accent);
+    background: var(--accent-light);
+    font-size: 14px; color: var(--accent);
+  }
+
+  /* DISCUSSION */
+  .discussion-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; }
+  .disc-card { border: 1px solid var(--rule); padding: 1.5rem; background: var(--paper-card); }
+  .disc-card h3 { font-size: 1rem; margin-bottom: 0.5rem; }
+  .disc-card p { font-size: 15px; color: var(--ink-mid); }
+  .cite-tag {
+    font-family: var(--mono); font-size: 10px; color: var(--ink-faint);
+    letter-spacing: 0.06em; display: block; margin-top: 0.75rem;
+  }
+
+  /* CONCLUSION */
+  .policy-list { list-style: none; display: flex; flex-direction: column; gap: 1rem; }
+  .policy-item {
+    display: grid; grid-template-columns: 32px 1fr; gap: 1rem;
+    padding: 1rem 1.25rem; border: 1px solid var(--rule); align-items: start;
+  }
+  .policy-icon {
+    font-family: var(--mono); font-size: 13px; font-weight: 500;
+    color: var(--accent); padding-top: 2px;
+  }
+  .policy-text { font-size: 15px; color: var(--ink-mid); }
+  .policy-text strong { font-weight: 500; color: var(--ink); display: block; margin-bottom: 0.2rem; }
+
+  /* REFERENCES */
+  .refs-list { list-style: none; display: flex; flex-direction: column; gap: 0; }
+  .ref-item {
+    padding: 0.9rem 0; border-bottom: 1px solid var(--rule);
+    font-size: 14px; color: var(--ink-mid); line-height: 1.65;
+    display: grid; grid-template-columns: 28px 1fr;
+  }
+  .ref-num {
+    font-family: var(--mono); font-size: 11px; color: var(--ink-faint);
+    padding-top: 2px;
+  }
+  .ref-item a { color: var(--accent); }
+
+  /* FOOTER */
+  footer {
+    background: var(--ink); color: rgba(255,255,255,0.55);
+    padding: 3rem 2rem; text-align: center;
+    font-family: var(--mono); font-size: 11px; letter-spacing: 0.08em;
+  }
+  footer strong { color: rgba(255,255,255,0.85); }
+
+  /* DIVIDER */
+  .rule-divider {
+    width: 40px; height: 2px; background: var(--accent);
+    margin: 1.5rem 0;
+  }
+
+  /* RESPONSIVE */
+  @media (max-width: 900px) {
+    .hero { grid-template-columns: 1fr; min-height: auto; }
+    .hero-text { padding: 4rem 2rem 2rem; border-right: none; border-bottom: 1px solid var(--rule); }
+    .hero-sidebar { padding: 2rem; }
+    .two-col, .three-col, .discussion-grid { grid-template-columns: 1fr; gap: 2rem; }
+    .nav-links { display: none; }
+    .section-inner { padding: 3rem 1.5rem; }
+  }
+
+  @media print {
+    nav { display: none; }
+    .hero { min-height: auto; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a class="nav-brand" href="#">Transit Equity · Denver</a>
+  <ul class="nav-links">
+    <li><a href="#abstract">Abstract</a></li>
+    <li><a href="#introduction">Introduction</a></li>
+    <li><a href="#literature">Literature</a></li>
+    <li><a href="#methods">Methods</a></li>
+    <li><a href="#results">Results</a></li>
+    <li><a href="#discussion">Discussion</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-text">
+    <div class="hero-tag">GEG Capstone · May 2026</div>
+    <h1>Transit Accessibility &amp; <em>Socioeconomic Equity</em> in Denver, Colorado</h1>
+    <div class="hero-meta">
+      <span>Kevin E. Morales</span>
+      <span>GIS · Network Analysis · ANOVA</span>
+      <span>ACS · Denver Open Catalog</span>
+    </div>
+    <p class="hero-intro">
+      A spatial quantitative investigation into whether Denver's block groups with the least transit accessibility are disproportionately characterized by lower household incomes, higher poverty levels, and greater concentrations of renter-occupied households.
+    </p>
+    <div class="hero-cta">
+      <a class="btn btn-primary" href="#results">View Results</a>
+      <a class="btn btn-outline" href="#abstract">Read Abstract</a>
+    </div>
+  </div>
+  <div class="hero-sidebar">
+    <div class="keyword-label">Keywords</div>
+    <div class="keywords">
+      <span class="kw">Transit Accessibility</span>
+      <span class="kw">Socioeconomic Equity</span>
+      <span class="kw">GIS</span>
+      <span class="kw">Network Analysis</span>
+      <span class="kw">Denver</span>
+      <span class="kw">ANOVA</span>
+      <span class="kw">Dijkstra's Algorithm</span>
+      <span class="kw">Block Groups</span>
+    </div>
+    <div class="keyword-label" style="margin-top: 1rem;">Key Findings</div>
+    <div class="stat-grid">
+      <div class="stat-card">
+        <span class="stat-num">p=.039</span>
+        <span class="stat-label">Income Significance</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">p=.041</span>
+        <span class="stat-label">Renter Significance</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">45</span>
+        <span class="stat-label">Block Groups Sampled</span>
+      </div>
+      <div class="stat-card">
+        <span class="stat-num">3</span>
+        <span class="stat-label">Access Tiers</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ABSTRACT -->
+<section id="abstract">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">00 — Abstract</span>
+      <h2>Overview</h2>
+      <div class="rule-divider"></div>
+    </div>
+    <div class="abstract-block">
+      <p>Access to transit remains a significant component of transit equity in urban settings, with the spatial distribution of transit infrastructure affecting socioeconomic disparities. This study examines the proximity of transit stops within Denver block groups, and whether those block groups with the least transit accessibility are disproportionately consisting of lower household incomes, higher poverty levels, and higher concentrations of renter households.</p>
+      <p>Using the Network Analyst Closest Facility tool in ArcGIS Pro and Dijkstra's shortest path algorithm, network-oriented walking distances from building centroids to the nearest stops are generated across Denver block groups with available data from the Denver Open Catalog and American Community Survey. Three tiers of transit accessibility — low, medium, and high — are selected using 15 block group samples each to generate three one-way ANOVA results testing statistical differences across demographic variables.</p>
+      <p>Statistically significant inverse relationships are discovered between transit accessibility and median household incomes, and a statistically significant positive relationship between accessibility and renter-occupied households. Poverty households did not reach statistical significance. The results imply that Denver's transit network is concentrated in lower-income, higher renter-occupied urban core areas, while suburban, wealthier, automobile-dominant neighborhoods have fewer transit stops. Isolated lower-income neighborhoods with low transit availability need to be prioritized. Implications include a need for further transit-oriented infrastructure in Denver.</p>
+    </div>
+  </div>
+</section>
+
+<!-- INTRODUCTION -->
+<section id="introduction">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">01 — Introduction &amp; Background</span>
+      <h2>Research Question &amp; Central Argument</h2>
+      <div class="rule-divider"></div>
+    </div>
+    <div class="two-col">
+      <div>
+        <p>Access to public transportation is a fundamental necessity for social equity, shaping residents' ability to reach employment, healthcare, food, and education. Denver, Colorado — a rapidly growing metropolitan area — faces mounting pressure from suburban expansion beyond existing transit infrastructure.</p>
+        <p>This study examines the following question: <em>To what extent does block group proximity to public transit stops vary across Denver, and are block groups with the least transit accessibility disproportionately characterized by lower household incomes, higher poverty levels, and greater concentrations of renter-occupied households?</em></p>
+        <p>The central argument is that Denver's transit infrastructure is concentrated in the urban core, leaving suburban block groups with the lowest accessibility and greatest automobile dependence. Paradoxically, while transit-dependent populations may currently reside near transit, rising housing costs are displacing lower-income residents toward the periphery — where both housing affordability and mobility suffer. Even where low-income areas retain immediate transit access, employment destinations in peripheral zones frequently do not, compounding mobility barriers.</p>
+        <p>This pattern reflects broader North American trends. Literature identifies transit-rich corridors as clustering in denser, more racially diverse, and lower-income urban neighborhoods, while affordable housing increasingly concentrates in peripheral zones with minimal transit access (Kramer, 2018). DRCOG acknowledges these imbalances, pursuing redevelopments such as the Cherry Creek Corridor to better align land use and transportation investment.</p>
+      </div>
+      <div>
+        <h3>Key Terms</h3>
+        <div class="rule-divider"></div>
+        <div style="display: flex; flex-direction: column; gap: 1.25rem; margin-top: 1rem;">
+          <div style="border: 1px solid var(--rule); padding: 1.25rem; background: var(--paper-card);">
+            <div class="lit-num">Term 01</div>
+            <h3 style="margin-bottom: 0.4rem;">Transit Accessibility</h3>
+            <p style="font-size: 15px; margin: 0;">Network-based walking distances from residential locations to the nearest transit stops, calculated using Dijkstra's shortest path algorithm along pedestrian infrastructure.</p>
+          </div>
+          <div style="border: 1px solid var(--rule); padding: 1.25rem; background: var(--paper-card);">
+            <div class="lit-num">Term 02</div>
+            <h3 style="margin-bottom: 0.4rem;">Block Group</h3>
+            <p style="font-size: 15px; margin: 0;">The U.S. Census Bureau's smallest geographic unit with publicly available demographic data, used here as the primary unit of spatial analysis.</p>
+          </div>
+          <div style="border: 1px solid var(--rule); padding: 1.25rem; background: var(--paper-card);">
+            <div class="lit-num">Term 03</div>
+            <h3 style="margin-bottom: 0.4rem;">ANOVA</h3>
+            <p style="font-size: 15px; margin: 0;">Analysis of Variance — the statistical method used to assess whether meaningful differences in demographic variables exist across low, medium, and high accessibility groups at p ≤ 0.05.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LITERATURE REVIEW -->
+<section id="literature">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">02 — Literature Review</span>
+      <h2>Three Thematic Frameworks</h2>
+      <div class="rule-divider"></div>
+      <p style="max-width: 640px; margin-top: 1rem;">The literature on transportation equity demonstrates that mobility constraints are inseparable from socioeconomic conditions, and that geographic distribution of transit infrastructure reinforces inequality.</p>
+    </div>
+    <div class="three-col">
+      <div class="lit-card">
+        <span class="lit-num">Theme 01</span>
+        <h3>Transportation Disadvantage as a Structural Condition</h3>
+        <p style="font-size: 15px;">Kramer (2018) found transit-rich areas concentrated in urban cores across 17 North American metros, with affordable housing in peripheral zones experiencing poor service. Walks (2018) showed automobile-dependent structures force lower-income residents into automotive debt. Lucas (2011) documents how systematic policy and land-use inequalities cause social exclusion in Tshwane, South Africa — limiting access to education and healthcare.</p>
+        <span class="cite-tag">Kramer 2018 · Walks 2018 · Lucas 2011</span>
+      </div>
+      <div class="lit-card">
+        <span class="lit-num">Theme 02</span>
+        <h3>Health &amp; Welfare Consequences of Transit Inaccessibility</h3>
+        <p style="font-size: 15px;">Rajasooriar &amp; Soma (2022) documented food access barriers driven by mobility constraints among nonprofit food hub users in Vancouver. Oluyede et al. (2022) identified transportation barriers preventing healthcare access in North Carolina. Im et al. (2025) found comparable disparities in Atlanta's food-as-medicine programs. Together, these studies link transit inaccessibility to chronic disease management and nutritional outcomes.</p>
+        <span class="cite-tag">Rajasooriar &amp; Soma 2022 · Oluyede et al. 2022 · Im et al. 2025</span>
+      </div>
+      <div class="lit-card">
+        <span class="lit-num">Theme 03</span>
+        <h3>Transit Investment, Mode Shift &amp; Equity</h3>
+        <p style="font-size: 15px;">Yousefzadeh Barri et al. (2021) found lower-income households in Greater Toronto responsive to transit improvements, with accessibility improvements advancing mode shifts and social equity goals. Bhattacharjee &amp; Goetz (2012) assessed Denver's light rail using temporal VMT data from 1992–2008, finding short-term reductions in adjacent highway traffic and slowing congestion growth — with spatially varied outcomes across corridors.</p>
+        <span class="cite-tag">Yousefzadeh Barri et al. 2021 · Bhattacharjee &amp; Goetz 2012</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- METHODS -->
+<section id="methods">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">03 — Methods</span>
+      <h2>Spatial Quantitative Methodology</h2>
+      <div class="rule-divider"></div>
+    </div>
+    <div class="two-col">
+      <div>
+        <h3 style="margin-bottom: 0.5rem;">Data Sources</h3>
+        <p>Primary data are derived from the Denver Open Catalog using the residential buildings dataset, combined Sidewalks–Current and Trails &amp; Sidewalks shapefiles for walking paths, and the BTS National Transit Stops dataset. Demographic variables — median household income, poverty counts, and renter-to-total household ratios — are drawn from U.S. Census Bureau ACS block group data joined to the TIGER/Line shapefile.</p>
+
+        <h3 style="margin-top: 1.75rem; margin-bottom: 0.5rem;">Network Distance Calculation</h3>
+        <p>Transit accessibility was measured using network-based walking distance from each residential building centroid to its nearest transit stop. Using ArcGIS Pro's Network Analyst Closest Facility tool, Dijkstra's shortest path algorithm calculated these distances along the pedestrian network rather than straight-line Euclidean approximation — an approach consistent with established transportation accessibility research reflecting actual pedestrian travel behavior (Chen, 2020).</p>
+
+        <h3 style="margin-top: 1.75rem; margin-bottom: 0.5rem;">Accessibility Tier Classification &amp; Sampling</h3>
+        <p>Block groups were classified into three tiers — low, medium, and high transit accessibility — based on mean network walking distances to the nearest stop. Fifteen block groups were sampled from each tier: those with the highest average distances (low access), moderate distances (medium access), and lowest distances (high access), yielding a total sample of 45 block groups.</p>
+
+        <h3 style="margin-top: 1.75rem; margin-bottom: 0.5rem;">Statistical Analysis</h3>
+        <p>Three one-way ANOVA tests were conducted at a significance threshold of p ≤ 0.05 to test differences across the three tiers for each dependent variable: median household income, poverty count, and renter-to-total household ratio. ANOVA compares group means and is resistant to normality violations across a wide range of sample sizes and distribution shapes (Blanca et al., 2017).</p>
+
+        <h3 style="margin-top: 1.75rem; margin-bottom: 0.5rem;">Limitations</h3>
+        <p>Reliance on block group aggregate data may obscure within-group variation and does not capture individual-level travel behavior. Walking distance as the sole accessibility measure excludes transit frequency, service hours, and pedestrian infrastructure quality. Future research should incorporate disaggregate data and qualitative methods to produce a more comprehensive equity analysis.</p>
+      </div>
+      <div>
+        <div style="border: 1px solid var(--rule); padding: 2rem; background: var(--paper-warm);">
+          <div class="lit-num">Figure 1 — Description</div>
+          <h3 style="margin-bottom: 1rem;">Spatial Distribution of Mean Walking Distance</h3>
+          <p style="font-size: 15px;">The choropleth map of Denver block groups, symbolized by mean network walking distance from residential buildings to the nearest transit stop, demonstrates low accessibility in suburban neighborhoods on the outskirts while the urban core shows high accessibility. The low, medium, and high access samples are highlighted across the block group distribution.</p>
+          <div style="background: var(--paper-card); border: 1px solid var(--rule); padding: 1.5rem; margin-top: 1.5rem;">
+            <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; text-align: center;">
+              <div>
+                <div style="height: 16px; background: #d4e4f5; border: 1px solid var(--rule); margin-bottom: 0.4rem;"></div>
+                <span style="font-family: var(--mono); font-size: 10px; color: var(--ink-light); letter-spacing: 0.06em;">HIGH ACCESS</span>
+              </div>
+              <div>
+                <div style="height: 16px; background: #4a7fb5; border: 1px solid var(--rule); margin-bottom: 0.4rem;"></div>
+                <span style="font-family: var(--mono); font-size: 10px; color: var(--ink-light); letter-spacing: 0.06em;">MEDIUM ACCESS</span>
+              </div>
+              <div>
+                <div style="height: 16px; background: #1a1814; border: 1px solid var(--rule); margin-bottom: 0.4rem;"></div>
+                <span style="font-family: var(--mono); font-size: 10px; color: var(--ink-light); letter-spacing: 0.06em;">LOW ACCESS</span>
+              </div>
+            </div>
+            <p style="font-size: 12px; color: var(--ink-faint); text-align: center; margin-top: 0.75rem; margin-bottom: 0; font-family: var(--mono);">Schematic legend — see full choropleth in ArcGIS Pro output</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">04 — Analysis &amp; Results</span>
+      <h2>ANOVA Findings Across Three Demographic Variables</h2>
+      <div class="rule-divider"></div>
+    </div>
+    <div class="results-grid">
+
+      <!-- TABLE 1 -->
+      <div class="result-block">
+        <div class="result-header">
+          <span class="result-title">Table 1 — Median Household Income by Transit Access Tier</span>
+          <span class="sig-badge sig">Significant · p = 0.039</span>
+        </div>
+        <div class="result-body">
+          <table>
+            <thead>
+              <tr><th>Group</th><th>n</th><th>Mean</th><th>Variance</th><th>Std Dev</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="highlight">Low Access</td><td>15</td><td class="highlight">$101,362</td><td>$1,556,704,037</td><td>$39,456</td></tr>
+              <tr><td class="highlight">Medium Access</td><td>15</td><td>$65,133</td><td>$924,359,457</td><td>$30,403</td></tr>
+              <tr><td class="highlight">High Access</td><td>15</td><td>$72,558</td><td>$2,231,800,473</td><td>$47,243</td></tr>
+            </tbody>
+          </table>
+          <table style="margin-top: 1rem;">
+            <thead>
+              <tr><th>Source</th><th>SS</th><th>df</th><th>MS</th><th>F</th><th>P-value</th><th>F crit</th></tr>
+            </thead>
+            <tbody class="anova-section">
+              <tr class="sig-row"><td>Between Groups</td><td>10,986,911,131</td><td>2</td><td>5,493,455,565</td><td>3.497</td><td><strong>0.039*</strong></td><td>3.220</td></tr>
+              <tr><td>Within Groups</td><td>65,980,095,525</td><td>42</td><td>1,570,954,655</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>Total</td><td>76,967,006,656</td><td>44</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+          <div class="result-finding">
+            Block groups with the lowest transit accessibility have the highest median household income ($101,362 vs. $65,133 medium; $72,558 high). F(2, 42) = 3.497, p = 0.039. Consistent with Kramer (2018): suburban peripheries with more affordable housing are automobile-dominant and transit-poor.
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE 2 -->
+      <div class="result-block">
+        <div class="result-header">
+          <span class="result-title">Table 2 — Poverty Level Count by Transit Access Tier</span>
+          <span class="sig-badge not-sig">Not Significant · p = 0.112</span>
+        </div>
+        <div class="result-body">
+          <table>
+            <thead>
+              <tr><th>Group</th><th>n</th><th>Mean</th><th>Variance</th><th>Std Dev</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="highlight">Low Access</td><td>15</td><td>40.27</td><td>1,574.92</td><td>39.69</td></tr>
+              <tr><td class="highlight">Medium Access</td><td>15</td><td>108.20</td><td>18,445.17</td><td>135.81</td></tr>
+              <tr><td class="highlight">High Access</td><td>15</td><td>72.40</td><td>2,506.40</td><td>50.06</td></tr>
+            </tbody>
+          </table>
+          <table style="margin-top: 1rem;">
+            <thead>
+              <tr><th>Source</th><th>SS</th><th>df</th><th>MS</th><th>F</th><th>P-value</th><th>F crit</th></tr>
+            </thead>
+            <tbody class="anova-section">
+              <tr><td>Between Groups</td><td>34,645.64</td><td>2</td><td>17,322.82</td><td>2.307</td><td>0.112</td><td>3.220</td></tr>
+              <tr><td>Within Groups</td><td>315,370.93</td><td>42</td><td>7,508.83</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>Total</td><td>350,016.58</td><td>44</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+          <div class="result-finding" style="border-left-color: var(--accent-warm); background: #faeeda; color: #854f0b;">
+            Poverty counts did not differ significantly across tiers (F(2, 42) = 2.307, p = 0.112). Extremely high within-group variance at medium access (SD = 135.81) suggests mixed-income block groups, consistent with Im et al. (2025): poverty–transit relationships are non-linear and context-dependent. Larger samples may reveal significance.
+          </div>
+        </div>
+      </div>
+
+      <!-- TABLE 3 -->
+      <div class="result-block">
+        <div class="result-header">
+          <span class="result-title">Table 3 — Renter-Occupied Household Ratio by Transit Access Tier</span>
+          <span class="sig-badge sig">Significant · p = 0.041</span>
+        </div>
+        <div class="result-body">
+          <table>
+            <thead>
+              <tr><th>Group</th><th>n</th><th>Mean Ratio</th><th>Variance</th><th>Std Dev</th></tr>
+            </thead>
+            <tbody>
+              <tr><td class="highlight">Low Access</td><td>15</td><td>0.388</td><td>0.134</td><td>0.366</td></tr>
+              <tr><td class="highlight">Medium Access</td><td>15</td><td>0.527</td><td>0.064</td><td>0.253</td></tr>
+              <tr><td class="highlight">High Access</td><td>15</td><td class="highlight">0.685</td><td>0.090</td><td>0.300</td></tr>
+            </tbody>
+          </table>
+          <table style="margin-top: 1rem;">
+            <thead>
+              <tr><th>Source</th><th>SS</th><th>df</th><th>MS</th><th>F</th><th>P-value</th><th>F crit</th></tr>
+            </thead>
+            <tbody class="anova-section">
+              <tr class="sig-row"><td>Between Groups</td><td>0.661</td><td>2</td><td>0.331</td><td>3.445</td><td><strong>0.041*</strong></td><td>3.220</td></tr>
+              <tr><td>Within Groups</td><td>4.030</td><td>42</td><td>0.096</td><td>—</td><td>—</td><td>—</td></tr>
+              <tr><td>Total</td><td>4.691</td><td>44</td><td>—</td><td>—</td><td>—</td><td>—</td></tr>
+            </tbody>
+          </table>
+          <div class="result-finding">
+            Renter ratio increases with transit accessibility (low: 0.388 → medium: 0.527 → high: 0.685). F(2, 42) = 3.445, p = 0.041. High-access block groups cluster in denser, renter-dominant urban areas. Aligns with Kramer (2018) and Yousefzadeh Barri et al. (2021): transit proximity is valued in rental markets while homeownership clusters in automobile-dominant suburbs.
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- DISCUSSION & CONCLUSION -->
+<section id="discussion">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">05 — Discussion &amp; Conclusion</span>
+      <h2>Interpretation, Implications &amp; Future Directions</h2>
+      <div class="rule-divider"></div>
+    </div>
+    <div class="discussion-grid" style="margin-bottom: 3rem;">
+      <div class="disc-card">
+        <span class="lit-num">Finding 01</span>
+        <h3>Income–Accessibility Inverse Relationship</h3>
+        <p>The statistically significant inverse relationship between transit accessibility and median household income aligns with Kramer's (2018) observations across North American metros. Denver's nuance — low-access block groups recording the highest median incomes ($101,362) — suggests these areas include employment destinations that lower-income households must travel to, compounding mobility barriers. Walks' (2018) automobile-debt dynamic explains how higher-income households afford peripheral neighborhoods, while lower-income peripheral residents face compounding disadvantage.</p>
+        <span class="cite-tag">Kramer 2018 · Walks 2018</span>
+      </div>
+      <div class="disc-card">
+        <span class="lit-num">Finding 02</span>
+        <h3>Renter Concentration &amp; Displacement Risk</h3>
+        <p>The significant positive relationship between transit accessibility and renter concentration reflects market dynamics where transit proximity is valued in rental markets. The equity concern is displacement: as rising housing costs push lower-income renters toward the periphery — particularly affordable growth corridors near DIA — they lose the transit access they previously relied upon. If transit investments remain concentrated in the urban core, populations already with access continue to benefit while displaced residents face compounding challenges.</p>
+        <span class="cite-tag">Kramer 2018 · Yousefzadeh Barri et al. 2021</span>
+      </div>
+      <div class="disc-card">
+        <span class="lit-num">Finding 03</span>
+        <h3>Non-Significant Poverty Findings</h3>
+        <p>Non-significant poverty results reflect high within-group variance in Denver's mixed-income neighborhoods — consistent with Im et al.'s (2025) conclusion that poverty and transit access share a non-linear relationship shaped by local context. Developments around Sloan's Lake integrating both high- and low-income households may contribute to this pattern. Greater sample sizes may reveal significance that this study's 15-block-group samples could not detect.</p>
+        <span class="cite-tag">Im et al. 2025</span>
+      </div>
+      <div class="disc-card">
+        <span class="lit-num">Finding 04</span>
+        <h3>Light Rail Corridors &amp; Geographic Equity</h3>
+        <p>Bhattacharjee &amp; Goetz's (2012) documentation of VMT reductions along established Denver light rail corridors aligns with this study's finding that high-access block groups cluster near those corridors. Peripheral block groups with low access have not benefited from mode shifts or congestion reductions — demonstrating the equity implications of geographically concentrated transit investment.</p>
+        <span class="cite-tag">Bhattacharjee &amp; Goetz 2012</span>
+      </div>
+    </div>
+
+    <h3 style="margin-bottom: 1.5rem; font-family: var(--serif); font-size: 1.4rem;">Policy Recommendations</h3>
+    <ul class="policy-list">
+      <li class="policy-item">
+        <span class="policy-icon">→</span>
+        <span class="policy-text"><strong>Transit-Oriented Development (TOD)</strong>Integrate affordable housing with high-quality transit service in underserved peripheral corridors, prioritizing block groups identified in the choropleth analysis as highest-need (Kramer, 2018).</span>
+      </li>
+      <li class="policy-item">
+        <span class="policy-icon">→</span>
+        <span class="policy-text"><strong>Subsidized Fares &amp; Paratransit</strong>Implement subsidized transit passes and paratransit improvements for transit-dependent populations — particularly those in low-access block groups where low-income households face compounding health and food access barriers (Rajasooriar &amp; Soma, 2022; Oluyede et al., 2022).</span>
+      </li>
+      <li class="policy-item">
+        <span class="policy-icon">→</span>
+        <span class="policy-text"><strong>Light Rail &amp; BRT Extensions</strong>Strategic extensions of light rail or bus rapid transit into underserved suburban corridors, guided by the spatial distribution of low-access, lower-income block groups. Yousefzadeh Barri et al. (2021) demonstrate that lower-income households respond positively to such improvements (Bhattacharjee &amp; Goetz, 2012).</span>
+      </li>
+      <li class="policy-item">
+        <span class="policy-icon">→</span>
+        <span class="policy-text"><strong>Pedestrian Infrastructure &amp; Land Use</strong>Address communities' needs beyond transit infrastructure — ensuring land uses support pedestrian access, reliable service hours, and fare structures that do not create financial barriers for the populations most dependent on transit.</span>
+      </li>
+    </ul>
+
+    <div style="margin-top: 3rem; border: 1px solid var(--rule); padding: 2rem; background: var(--paper-warm);">
+      <h3 style="margin-bottom: 1rem;">Future Research Directions</h3>
+      <p>Future research should expand sample sizes, incorporate transit quality metrics beyond distance (frequency, service hours, pedestrian infrastructure quality), and apply temporal analysis to track how investments shift demographic patterns over time. Qualitative interviews with residents in low-access block groups would contextualize the statistical findings and capture lived transportation disadvantages — building the comprehensive, mixed-methods understanding necessary for equitable and informed planning decisions in Denver.</p>
+    </div>
+  </div>
+</section>
+
+<!-- REFERENCES -->
+<section id="references">
+  <div class="section-inner">
+    <div class="section-header">
+      <span class="section-num">06 — References</span>
+      <h2>Bibliography</h2>
+      <div class="rule-divider"></div>
+    </div>
+    <ul class="refs-list">
+      <li class="ref-item"><span class="ref-num">01</span><span>Apparicio, P., Abdelmajid, M., Riva, M., &amp; Shearmur, R. (2008). Comparing alternative approaches to measuring the geographical accessibility of urban health services. <em>International Journal of Health Geographics, 7</em>(7). <a href="https://doi.org/10.1186/1476-072X-7-7">https://doi.org/10.1186/1476-072X-7-7</a></span></li>
+      <li class="ref-item"><span class="ref-num">02</span><span>Bhattacharjee, S., &amp; Goetz, A. R. (2012). Impact of light rail on traffic congestion in Denver. <em>Journal of Transport Geography, 22</em>, 262–270. <a href="https://doi.org/10.1016/j.jtrangeo.2012.01.008">https://doi.org/10.1016/j.jtrangeo.2012.01.008</a></span></li>
+      <li class="ref-item"><span class="ref-num">03</span><span>Blanca, M. J., et al. (2017). Non-normal data: Is ANOVA still a valid option? <em>Psicothema, 29</em>(4), 552+. <a href="https://dx.doi.org/10.7334/psicothema2016.383">https://dx.doi.org/10.7334/psicothema2016.383</a></span></li>
+      <li class="ref-item"><span class="ref-num">04</span><span>Chen, Y. (2020). Application of improved Dijkstra algorithm in coastal tourism route planning. <em>Journal of Coastal Research, 106</em>, 251–254. <a href="https://doi.org/10.2112/SI106-059.1">https://doi.org/10.2112/SI106-059.1</a></span></li>
+      <li class="ref-item"><span class="ref-num">05</span><span>Dijkstra, E. W. (1959). A note on two problems in connexion with graphs. <em>Numerische Mathematik, 1</em>(1), 269–271. <a href="https://doi.org/10.1007/BF01386390">https://doi.org/10.1007/BF01386390</a></span></li>
+      <li class="ref-item"><span class="ref-num">06</span><span>Esri. (2024). <em>How Closest Facility works.</em> ArcGIS Pro Documentation. <a href="https://pro.arcgis.com/en/pro-app/latest/help/analysis/networks/closest-facility-tutorial.htm">https://pro.arcgis.com/en/pro-app/latest/help/analysis/networks/closest-facility-tutorial.htm</a></span></li>
+      <li class="ref-item"><span class="ref-num">07</span><span>Im, H., Li, F., Stover, S., Abel, C., Farmer, J., García, C. M., Lee, J.-A., &amp; Wyczalkowski, C. K. (2025). Overcoming transportation barriers for low-income individuals with chronic conditions. <em>Healthcare, 13</em>(22), 2869. <a href="https://doi.org/10.3390/healthcare13222869">https://doi.org/10.3390/healthcare13222869</a></span></li>
+      <li class="ref-item"><span class="ref-num">08</span><span>Kramer, A. (2018). The unaffordable city: Housing and transit in North American cities. <em>Cities, 83</em>, 1–10. <a href="https://doi.org/10.1016/j.cities.2018.05.013">https://doi.org/10.1016/j.cities.2018.05.013</a></span></li>
+      <li class="ref-item"><span class="ref-num">09</span><span>Lucas, K. (2011). Making the connections between transport disadvantage and the social exclusion of low-income populations in the Tshwane Region of South Africa. <em>Journal of Transport Geography, 19</em>(6), 1320–1334. <a href="https://doi.org/10.1016/j.jtrangeo.2011.02.007">https://doi.org/10.1016/j.jtrangeo.2011.02.007</a></span></li>
+      <li class="ref-item"><span class="ref-num">10</span><span>Oluyede, L., Cochran, A. L., Prunkl, L., Wang, J., Wolfe, M., &amp; McDonald, N. C. (2022). Unpacking transportation barriers and facilitators to accessing health care. <em>Transportation Research Interdisciplinary Perspectives, 13</em>, 100565. <a href="https://doi.org/10.1016/j.trip.2022.100565">https://doi.org/10.1016/j.trip.2022.100565</a></span></li>
+      <li class="ref-item"><span class="ref-num">11</span><span>Rajasooriar, D., &amp; Soma, T. (2022). Food access, mobility, and transportation. <em>BMC Public Health, 22</em>, 6. <a href="https://doi.org/10.1186/s12889-021-12434-9">https://doi.org/10.1186/s12889-021-12434-9</a></span></li>
+      <li class="ref-item"><span class="ref-num">12</span><span>Walks, A. (2018). Driving the poor into debt? Automobile loans, transport disadvantage, and automobile dependence. <em>Transport Policy, 65</em>, 137–149. <a href="https://doi.org/10.1016/j.tranpol.2017.01.001">https://doi.org/10.1016/j.tranpol.2017.01.001</a></span></li>
+      <li class="ref-item"><span class="ref-num">13</span><span>Yousefzadeh Barri, E., Farber, S., Kramer, A., Jahanshahi, H., Allen, J., &amp; Beyazit, E. (2021). Can transit investments in low-income neighbourhoods increase transit use? <em>Transportation Research Part D, 95</em>, 102849. <a href="https://doi.org/10.1016/j.trd.2021.102849">https://doi.org/10.1016/j.trd.2021.102849</a></span></li>
+    </ul>
+
+    <div style="margin-top: 3rem;">
+      <h3 style="font-family: var(--serif); margin-bottom: 1rem;">Data Sources</h3>
+      <ul class="refs-list">
+        <li class="ref-item"><span class="ref-num">D1</span><span>City and County of Denver. (2026). Trails and sidewalks [Shapefile]. Denver Open Data Catalog. <a href="https://www.denvergov.org/opendata/dataset/city-and-county-of-denver-trails-and-sidewalks">denvergov.org</a></span></li>
+        <li class="ref-item"><span class="ref-num">D2</span><span>City and County of Denver. (2026). Sidewalks – Current [Shapefile]. geospatialDENVER Open Data Catalog. <a href="https://opendata-geospatialdenver.hub.arcgis.com/datasets/bd48b3fabbf24ee9affff7f770881d64_143">opendata-geospatialdenver.hub.arcgis.com</a></span></li>
+        <li class="ref-item"><span class="ref-num">D3</span><span>City and County of Denver. (2022). Building outlines 2022 [Shapefile]. geospatialDENVER Open Data Catalog. <a href="https://opendata-geospatialdenver.hub.arcgis.com/datasets/04e5069b4cf843d2bfe15ad0d1c66e00_111">opendata-geospatialdenver.hub.arcgis.com</a></span></li>
+        <li class="ref-item"><span class="ref-num">D4</span><span>U.S. Census Bureau. (2020). Poverty status (Table B17101). 2019–2023 ACS 5-year estimates. <a href="https://data.census.gov/table/ACSST5Y2023.S1701">data.census.gov</a></span></li>
+        <li class="ref-item"><span class="ref-num">D5</span><span>U.S. Census Bureau. (2020). Median household income (Table B19013). 2019–2023 ACS 5-year estimates. <a href="https://data.census.gov/table/ACSST5Y2023.S1903">data.census.gov</a></span></li>
+        <li class="ref-item"><span class="ref-num">D6</span><span>U.S. Census Bureau. (2020). Housing tenure (Table B25003). 2019–2023 ACS 5-year estimates. <a href="https://data.census.gov/table/ACSDP5Y2023.DP04">data.census.gov</a></span></li>
+        <li class="ref-item"><span class="ref-num">D7</span><span>U.S. Census Bureau, Geography Division. (2020). TIGER/Line shapefile, Colorado block group. <a href="https://catalog.data.gov/dataset/tiger-line-shapefile-2022-state-colorado-co-block-group">catalog.data.gov</a></span></li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <p><strong>Transit Accessibility &amp; Socioeconomic Equity in Denver, Colorado</strong></p>
+  <p style="margin-top: 0.5rem;">Kevin E. Morales · GEG Capstone · May 2026</p>
